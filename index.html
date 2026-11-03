@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <link rel="apple-touch-icon" href="./dayone-icon.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DayOne</title>
+  <title>StreakSquad</title>
   
-  <!-- Smartphone & Browser App Icon -->
+  <!-- App-Icon für Smartphone & Browser -->
   <link rel="icon" type="image/png" href="icon.png">
   <link rel="apple-touch-icon" href="icon.png">
 
@@ -196,4 +196,119 @@
       border: 1px solid var(--accent-gold);
       color: var(--accent-gold);
       padding: 6px 10px;
-      border-radius: 6px
+      border-radius: 6px;
+      margin-top: 6px;
+      font-size: 0.8rem;
+      width: 100%;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <header>
+      <h1>STREAKSQUAD</h1>
+      <p>Dark Luxury Fitness & Habits</p>
+    </header>
+
+    <!-- Streak Display -->
+    <div class="card">
+      <div class="card-title">Aktueller Streak</div>
+      <div class="streak-display">
+        <span class="streak-fire">🔥</span>
+        <span class="streak-count" id="streakCount">7</span>
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;">Tage in Folge aktiv</p>
+      </div>
+    </div>
+
+    <!-- Daily Workout To-Do -->
+    <div class="card">
+      <div class="card-title">Tagesziele</div>
+      <div class="todo-input-group">
+        <input type="text" id="todoInput" placeholder="Neues Ziel (z.B. 20 Liegestütze)...">
+        <button onclick="addTodo()">+</button>
+      </div>
+      <ul class="todo-list" id="todoList">
+        <li class="todo-item">
+          <span>Oberkörper Workout</span>
+          <input type="checkbox" onchange="toggleDone(this)">
+        </li>
+        <li class="todo-item">
+          <span>3 Liter Wasser trinken</span>
+          <input type="checkbox" onchange="toggleDone(this)">
+        </li>
+      </ul>
+    </div>
+
+    <!-- Community Survey Chat -->
+    <div class="card">
+      <div class="card-title">Squad Chat & Umfragen</div>
+      <div class="chat-box" id="chatBox">
+        <div class="message bot">
+          <strong>SquadBot:</strong> Welches Workout steht heute bei dir an?
+          <button class="poll-option" onclick="vote('Push Day')">💪 Push Day</button>
+          <button class="poll-option" onclick="vote('Pull Day')">🏋️‍♂️ Pull Day</button>
+        </div>
+      </div>
+      <div class="todo-input-group">
+        <input type="text" id="chatInput" placeholder="Nachricht schreiben...">
+        <button onclick="sendMessage()">Senden</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // To-Do Hinzufügen
+    function addTodo() {
+      const input = document.getElementById('todoInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const ul = document.getElementById('todoList');
+      const li = document.createElement('li');
+      li.className = 'todo-item';
+      li.innerHTML = `<span>${text}</span><input type="checkbox" onchange="toggleDone(this)">`;
+      ul.appendChild(li);
+      input.value = '';
+    }
+
+    // Task erledigen & Streak erhöhen
+    function toggleDone(checkbox) {
+      const item = checkbox.parentElement;
+      if (checkbox.checked) {
+        item.classList.add('done');
+        let streak = document.getElementById('streakCount');
+        streak.innerText = parseInt(streak.innerText) + 1;
+      } else {
+        item.classList.remove('done');
+      }
+    }
+
+    // Chat Nachrichten senden
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBox = document.getElementById('chatBox');
+      const msg = document.createElement('div');
+      msg.className = 'message user';
+      msg.innerText = text;
+      chatBox.appendChild(msg);
+      input.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Umfrage Abstimmen
+    function vote(option) {
+      const chatBox = document.getElementById('chatBox');
+      const msg = document.createElement('div');
+      msg.className = 'message user';
+      msg.innerText = 'Abgestimmt für: ' + option;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+</body>
+</html>
